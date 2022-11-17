@@ -1,2 +1,2 @@
-# tutorials
+# Web App testing list
 Simple tutorials
