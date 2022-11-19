@@ -1,2 +1,5 @@
-# Web App testing list
-Simple tutorials
+# JWT
+
+## JWT authentication bypass via unverified signature  
+
+
