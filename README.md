@@ -13,7 +13,8 @@ In other words, a JWT is usually either a JWS or JWE token. When people use "JWT
 Implementation flaw is that server doesn't verify the signature of any JWTs that it receives  
 Changing JWT "user": value to administrator is possible to connect to restricted /admin panel
 ## JWT authentication bypass via flawed signature verification  
-
+Change the value of sub claim to administrator
+Select the header of the JWT, change the value of the alg parameter to none
 
 
 
