@@ -13,7 +13,7 @@ In other words, a JWT is usually either a JWS or JWE token. When people use "JWT
 
 Alghorithms
 
-Signatures are not encryption, signatures only allow verification that the content of the JWT was not changed. RS256 and HS256 are the most common algorithms used for signing JWTs. RS256 and HS256 are the most common algorithms used for signing JWTs, also there is ES256 or PS256.
+Signatures are not encryption, signatures only allow verification that the content of the JWT was not changed. RS256 and HS256 are the most common algorithms used for signing JWTs. RS256 (RSA using SHA256) and HS256 (HMAC using SHA256) are the most common algorithms used for signing JWTs, also there is ES256 or PS256.
 
 Signatures are created by combining encoded versions of the header and payload of a JWT, passing them and the secret as parameters into the algorithm defined in the header. example code that can be used to create a JWT signature:
 
@@ -22,7 +22,15 @@ HMACSHA256(
     base64UrlEncode(payload),  
     secret)    
 Example output of what the signed JWT looks like:  
-> eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c  
+> eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c    
+
+HS256 (HMAC with SHA-256) is a symmetric keyed hashing algorithm that uses one secret key. Symmetric means two parties share the secret key. The key is used for both generating the signature and validating it.  
+Be mindful when using a shared key; it can open potential vulnerabilities if the verifiers(multiple applications) are not appropriately secured.  
+
+RS256 (RSA Signature with SHA-256) is an asymmetric algorithm that uses a public/private key pair. The identity provider has a private key to generate the signature. The receiver of the JWT uses a public key to validate the JWT signature. The public key used to verify and the private key used to sign the token are linked since they are generated as a pair. 
+
+
+
 
 
 
