@@ -29,14 +29,10 @@ Be mindful when using a shared key; it can open potential vulnerabilities if the
 
 RS256 (RSA Signature with SHA-256) is an asymmetric algorithm that uses a public/private key pair. The identity provider has a private key to generate the signature. The receiver of the JWT uses a public key to validate the JWT signature. The public key used to verify and the private key used to sign the token are linked since they are generated as a pair. 
 
+You might be wondering if there is any scenario where you would choose HS256? And yes, there are a couple of situations where you may use HS256.
+You could consider using HS256 when working on legacy applications that can't support RS256. Another possible use case for using HS256 instead of RS256 is when your application makes a very large number of requests because HS256 is more efficient than RS256.
 
-
-
-
-
-
-
-
+=======================
 
 ## JWT authentication bypass via unverified signature  
 Server doesn't verify the signature of any JWTs that it receives allows to accept all JWT!
