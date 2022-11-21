@@ -24,7 +24,8 @@ Server allows to delete signature and accepts none alg
 * hashcat -a 0 -m 16500 <YOUR-JWT> /path/to/jwt.secrets.list --show         #secret1 example secret
 * In Burp, JWT Editor Keys tab click New Symmetric Key, Generate and replace k parameter with secret1  
 * Replace k value with the Base64-encoded secret1.  
-* 
+* at JWT Change "sub": "administrator" and at bottom click Sign (Don't modify header option) 
+Token is now modified and signed. With token we access to administrator acc.
 
 
 
