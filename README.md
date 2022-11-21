@@ -20,7 +20,7 @@ Signatures are created by combining encoded versions of the header and payload o
 HMACSHA256(  
   base64UrlEncode(header) + "." +  
   base64UrlEncode(payload),  
-  secret) 
+  secret)    
 Example output of what the signed JWT looks like:  
 > eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c  
 
