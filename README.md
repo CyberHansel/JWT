@@ -20,7 +20,11 @@ Server allows to delete signature and accepts none alg
 * delete signature part, cos we changes value to none, but leave second .
 * GET /admin/delete?username=carlos HTTP/1.1  
 ## JWT authentication bypass via weak signing key  
-
+* Copy JWT and brute-force the secret:  
+* hashcat -a 0 -m 16500 <YOUR-JWT> /path/to/jwt.secrets.list --show         #secret1 example secret
+* In Burp, JWT Editor Keys tab click New Symmetric Key, Generate and replace k parameter with secret1  
+* Replace k value with the Base64-encoded secret1.  
+* 
 
 
 
