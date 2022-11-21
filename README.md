@@ -8,11 +8,21 @@ A JWT consists of 3 parts: a header, a payload, and a signature. These are each 
     
 In practice, JWTs aren't used standalone. The JWT is extended by JSON Web Signature (JWS) and JSON Web Encryption (JWE) specifications.   
 In other words, a JWT is usually either a JWS or JWE token. When people use "JWT", they almost always mean a JWS token. JWEs are very similar, except that the actual contents of the token are encrypted rather than just encoded.   
-======================================================================
+
+=======================
+
 Alghorithms
 
 Signatures are not encryption, signatures only allow verification that the content of the JWT was not changed. RS256 and HS256 are the most common algorithms used for signing JWTs. RS256 and HS256 are the most common algorithms used for signing JWTs, also there is ES256 or PS256.
 
+Signatures are created by combining encoded versions of the header and payload of a JWT, passing them and the secret as parameters into the algorithm defined in the header. example code that can be used to create a JWT signature:
+
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  secret) 
+Example output of what the signed JWT looks like:  
+> eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c  
 
 
 
