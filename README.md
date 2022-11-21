@@ -20,6 +20,7 @@ Server allows to delete signature and accepts none alg
 * delete signature part, cos we changes value to none, but leave second .
 * GET /admin/delete?username=carlos HTTP/1.1  
 ## JWT authentication bypass via weak signing key  
+Server has weak JWT signature that can be hacked with hashcat
 * Copy JWT and brute-force the secret:  
 * hashcat -a 0 -m 16500 <YOUR-JWT> /path/to/jwt.secrets.list --show         #secret1 example secret
 * In Burp, JWT Editor Keys tab click New Symmetric Key, Generate and replace k parameter with secret1  
@@ -27,7 +28,22 @@ Server allows to delete signature and accepts none alg
 * at JWT Change "sub": "administrator" and at bottom click Sign (Don't modify header option) 
 Token is now modified and signed. With token we access to administrator acc.
 
+## JWT authentication bypass via weak signing key
+This lab uses a JWT-based mechanism for handling sessions. The server supports the jwk parameter in the JWT header. This is sometimes used to embed the correct verification key directly in the token. However, it fails to check whether the provided key came from a trusted source.  
+Go to the JWT Editor Keys tab in Burp's main tab bar.
+* In Burp JWT New RSA Key,Generate to automatically generate a new key pair.
+* at JWT Change "sub": "administrator", click Attack, then select Embedded JWK, select your newly generated RSA key. In the header of the JWT, observe that a jwk parameter has been added containing your public key.
+* Send the request /admin
+    
 
 
-
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
