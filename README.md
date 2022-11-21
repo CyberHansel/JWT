@@ -53,7 +53,8 @@ Server has weak JWT signature that can be hacked with hashcat
 * at JWT Change "sub": "administrator" and at bottom click Sign (Don't modify header option) 
 Token is now modified and signed. With token we access to administrator acc.
 
-## JWT authentication bypass via weak signing key
+## JWT authentication bypass via jwk header injection  
+
 !(JWKS) is a set of keys containing the public keys used to verify any JSON Web Token (JWT) issued by the Authorization Server and signed using the RS256 signing algorithm  
 This lab uses a JWT-based mechanism for handling sessions. The server supports the jwk parameter in the JWT header. This is sometimes used to embed the correct verification key directly in the token. However, it fails to check whether the provided key came from a trusted source.  
     
@@ -63,7 +64,7 @@ This lab uses a JWT-based mechanism for handling sessions. The server supports t
     
 ## JWT authentication bypass via weak signing key
 
-    
+
     
     
     
