@@ -2,12 +2,17 @@
 Install JWT Editor extension on Burp  
 
 A JWT consists of 3 parts: a header, a payload, and a signature. These are each separated by a dot  
-* Header -  base64url-encoded, metadata about the token itself  
+* Header -  base64url-encoded, metadata about the token itself: alg:"HS256" and type:"JWT" and others
 * Payload - base64url-encoded,  
 * Signature - server that issues the token typically generates the signature by hashing the header and payload. In some cases, they also encrypt the resulting hash. 
     
 In practice, JWTs aren't used standalone. The JWT is extended by JSON Web Signature (JWS) and JSON Web Encryption (JWE) specifications.   
 In other words, a JWT is usually either a JWS or JWE token. When people use "JWT", they almost always mean a JWS token. JWEs are very similar, except that the actual contents of the token are encrypted rather than just encoded.   
+
+According to the JWS specification, only the alg header parameter is mandatory. In practice, however, JWT headers (also known as JOSE headers) often contain several other parameters. The following ones are of particular interest to attackers.  
+* jwk (JSON Web Key) - Provides an embedded JSON object representing the key.  
+* jku (JSON Web Key Set URL) - Provides a URL from which servers can fetch a set of keys containing the correct key.  
+* kid (Key ID) - Provides an ID that servers can use to identify the correct key in cases where there are multiple keys to choose from. Depending on the format of the key, this may have a matching kid parameter.
 
 =======================
 
@@ -53,8 +58,7 @@ Server has weak JWT signature that can be hacked with hashcat
 * at JWT Change "sub": "administrator" and at bottom click Sign (Don't modify header option) 
 Token is now modified and signed. With token we access to administrator acc.
 
-## JWT authentication bypass via jwk header injection  
-
+## JWT authentication bypass via JWK header injection  
 !(JWKS) is a set of keys containing the public keys used to verify any JSON Web Token (JWT) issued by the Authorization Server and signed using the RS256 signing algorithm  
 This lab uses a JWT-based mechanism for handling sessions. The server supports the jwk parameter in the JWT header. This is sometimes used to embed the correct verification key directly in the token. However, it fails to check whether the provided key came from a trusted source.  
     
@@ -62,9 +66,13 @@ This lab uses a JWT-based mechanism for handling sessions. The server supports t
 * at JWT Change "sub": "administrator", click Attack, then select Embedded JWK, select your newly generated RSA key. In the header of the JWT, observe that a jwk parameter has been added containing your public key.
 * Send the request /admin
     
-## JWT authentication bypass via weak signing key
+## JWT authentication bypass via JKU header injection  
+The “jku” (JWK Set URL) Header Parameter is a URI that refers to a resource for a set of JSON-encoded public keys, one of which corresponds to the key used to digitally sign the JWS (JSON Web Signature).
 
-
+* In Burp JWT Editor New RSA Key,Generate to automatically generate a new key pair.
+* at JWT Change "sub": "administrator", click Attack, then select Embedded JWK, select your newly generated RSA key. In the header of the JWT, observe that a jwk parameter has been added containing your public key.
+* Send the request /admin
+    
     
     
     
