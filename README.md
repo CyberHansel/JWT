@@ -67,13 +67,13 @@ Example:
     "kid": "ed2Nf8sb-sD6ng0-scs5390g-fFD8sfxG",
     "typ": "JWT",
     "alg": "RS256",
-    "jwk": {
-        "kty": "RSA",
-        "e": "AQAB",
-        "kid": "ed2Nf8sb-sD6ng0-scs5390g-fFD8sfxG",
-        "n": "yy1wpYmffgXBxhAUJzHHocCuJolwDqql75ZWuCQ_cb33K2vh9m"
-    }
-> }   
+    "jwk": {  
+            "kty": "RSA",  
+            "e": "AQAB",  
+            "kid": "ed2Nf8sb-sD6ng0-scs5390g-fFD8sfxG",  
+            "n": "yy1wpYmffgXBxhAUJzHHocCuJolwDqql75ZWuCQ_cb33K2vh9m"  
+        }  
+     }   
     
 Ideally, servers should only use a limited whitelist of public keys to verify JWT signatures. However, misconfigured servers sometimes use any key that's embedded in the jwk parameter.
 You can exploit this behavior by signing a modified JWT using your own RSA private key, then embedding the matching public key in the jwk header.  
@@ -85,11 +85,23 @@ You can exploit this behavior by signing a modified JWT using your own RSA priva
     
 ## JWT authentication bypass via JKU header injection  
 Instead of embedding public keys directly using the jwk header parameter, some servers let you use the jku (JWK Set URL) header parameter to reference a JWK Set containing the key. When verifying the signature, the server fetches the relevant key from this URL.  
+JWK Sets like this are sometimes exposed publicly via a standard endpoint, such as /.well-known/jwks.json.
+More secure websites will only fetch keys from trusted domains, but you can sometimes take advantage of URL parsing discrepancies to bypass this kind of filtering. 
     
 * In Burp JWT Editor New RSA Key,Generate to automatically generate a new key pair.
-* at JWT Change "sub": "administrator", click Attack, then select Embedded JWK, select your newly generated RSA key. In the header of the JWT, observe that a jwk parameter has been added containing your public key.
-* Send the request /admin
+* at JWT Change "sub": "administrator"  
+* In the browser, go to the exploit server, replace body with {"keys":[]} 
+* Back to JWT Editor, right-click on the entry for the key that you just generated, then select Copy Public Key as JWK. and paste in empty [] in exploit server  
+* So you we cahnge url in JWT to our malicious exploit server that contains our keys.
     
+## JWT authentication bypass via kid header path traversal
+Servers may use several cryptographic keys for signing different kinds of data, not just JWTs. For this reason, the header of a JWT may contain a kid (Key ID) parameter, which helps the server identify which key to use when verifying the signature.
+
+Verification keys are often stored as a JWK Set. In this case, the server may simply look for the JWK with the same kid as the token. However, the JWS specification doesn't define a concrete structure for this ID - it's just an arbitrary string of the developer's choosing. For example, they might use the kid parameter to point to a particular entry in a database, or even the name of a file.
+
+If this parameter is also vulnerable to directory traversal, an attacker could potentially force the server to use an arbitrary file from its filesystem as the verification key.  
+
+
     
     
     
