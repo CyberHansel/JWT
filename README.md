@@ -84,8 +84,8 @@ You can exploit this behavior by signing a modified JWT using your own RSA priva
 * Send the request /admin
     
 ## JWT authentication bypass via JKU header injection  
-The “jku” (JWK Set URL) Header Parameter is a URI that refers to a resource for a set of JSON-encoded public keys, one of which corresponds to the key used to digitally sign the JWS (JSON Web Signature).
-
+Instead of embedding public keys directly using the jwk header parameter, some servers let you use the jku (JWK Set URL) header parameter to reference a JWK Set containing the key. When verifying the signature, the server fetches the relevant key from this URL.  
+    
 * In Burp JWT Editor New RSA Key,Generate to automatically generate a new key pair.
 * at JWT Change "sub": "administrator", click Attack, then select Embedded JWK, select your newly generated RSA key. In the header of the JWT, observe that a jwk parameter has been added containing your public key.
 * Send the request /admin
