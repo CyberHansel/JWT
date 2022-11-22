@@ -40,8 +40,9 @@ You could consider using HS256 when working on legacy applications that can't su
 =======================
 
 ## JWT authentication bypass via unverified signature  
-Server doesn't verify the signature of any JWTs that it receives allows to accept all JWT!
-Changing JWT "user": value to administrator is possible to connect to restricted /admin panel
+JWT libraries typically provide one method for verifying tokens and another that just decodes them. For example, the Node.js library jsonwebtoken has verify() and decode().
+Occasionally, developers confuse these two methods and only pass incoming tokens to the decode() method. This effectively means that the application doesn't verify the signature at all.!  
+* Changing JWT "user": value to administrator is possible to connect to restricted /admin panel
 ## JWT authentication bypass via flawed signature verification  
 Server allows to delete signature and accepts none alg
 
