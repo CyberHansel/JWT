@@ -96,10 +96,10 @@ More secure websites will only fetch keys from trusted domains, but you can some
     
 ## JWT authentication bypass via kid header path traversal
 Servers may use several cryptographic keys for signing different kinds of data, not just JWTs. For this reason, the header of a JWT may contain a kid (Key ID) parameter, which helps the server identify which key to use when verifying the signature.
-
 Verification keys are often stored as a JWK Set. In this case, the server may simply look for the JWK with the same kid as the token. However, the JWS specification doesn't define a concrete structure for this ID - it's just an arbitrary string of the developer's choosing. For example, they might use the kid parameter to point to a particular entry in a database, or even the name of a file.
-
 If this parameter is also vulnerable to directory traversal, an attacker could potentially force the server to use an arbitrary file from its filesystem as the verification key.  
+If the server stores its verification keys in a database, the kid header parameter is also a potential vector for SQL injection attacks.
+
 
 
     
