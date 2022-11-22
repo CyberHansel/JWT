@@ -100,7 +100,12 @@ Verification keys are often stored as a JWK Set. In this case, the server may si
 If this parameter is also vulnerable to directory traversal, an attacker could potentially force the server to use an arbitrary file from its filesystem as the verification key.  
 If the server stores its verification keys in a database, the kid header parameter is also a potential vector for SQL injection attacks.
 
+In this solution, we'll point the kid parameter to the standard file /dev/null and sign the token with a null byte. In practice, you can point the kid parameter to any file with predictable contents.  
 
+* Login, get my account request, change JWT user to administrator, and kid:"../../../../../dev/null"
+* Create new WTF symmetric key and change value of k to null byte in Base64 k:"AA=="
+* access /admin
+    
 
     
     
