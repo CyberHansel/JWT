@@ -37,6 +37,7 @@ RS256 (RSA Signature with SHA-256) is an asymmetric algorithm that uses a public
 You might be wondering if there is any scenario where you would choose HS256? And yes, there are a couple of situations where you may use HS256.
 You could consider using HS256 when working on legacy applications that can't support RS256. Another possible use case for using HS256 instead of RS256 is when your application makes a very large number of requests because HS256 is more efficient than RS256.
 
+
 =======================
 
 ## JWT authentication bypass via unverified signature  
@@ -106,7 +107,31 @@ In this solution, we'll point the kid parameter to the standard file /dev/null a
 * Create new WTF symmetric key and change value of k to null byte in Base64 k:"AA=="
 * access /admin
     
+## JWT authentication bypass via algorithm confusion
+Algorithm confusion vuln arise due to flawed implementation of JWT libraries. 
+ 
+As the names suggest, the private key must be kept secret, but the public key is often shared so that anybody can verify the signature of tokens issued by the server.    
+* Obtain the server's public key: Servers sometimes expose their public keys as JSON Web Key (JWK) objects via a standard endpoint mapped to /jwks.json or /.well-known/jwks.json, for example. These may be stored in an array of JWKs called keys. This is known as a JWK Set.  
+> {"keys":[{"kty":"RSA","e":"AQAB","use":"sig","kid":"d9cf9e2d-f107-4594-9da5-f9dd4f61d019","alg":"RS256","n":"wM5uGbFNgdW6OINqfZxmJEALyWjZL-XEA0WQ3GxM3rbYlHtND3EmCzV-xf5YiVWTHIqpq46tnPOevG_FoVf41yKlHN8N0km5OIUbdyPV3JbQ5gvtczbLWzGsCBanR99R5hvB5ZjlEutt5LdL0pC3mUqFDfEsvocFitN45Lc7k7llg2YoYUjOmzxQzMZo4_tv3wlpb-dxqK15zacqamvkeowfJ9NTSz6Qwk3CDknqMZEA3UKNM4JEYIPJql-4ylQ6X5KTOAkWaJZt3e9bHsBNKsBozaZn7H3TWYp2Ojl0_eESFMU3QyLlepU77gcoTNdYSRVo1Ou4JEJGhpRFoAGdAw"}]}   
+    
+* Convert the public key to a suitable format. For the purpose of this example, let's assume that we need the key in X.509 PEM format. You can convert a JWK to a PEM using the JWT Editor, New RSA key
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
