@@ -62,17 +62,23 @@ Token is now modified and signed. With token we access to administrator acc.
 
 ## JWT authentication bypass via JWK header injection  
 The JSON Web Signature (JWS) specification describes an optional jwk header parameter, which servers can use to embed their public key directly within the token itself in JWK format.  
-    Example:  
-     {
-    "kid": "ed2Nf8sb-sD6ng0-scs5390g-fFD8sfxG",  
-    "typ": "JWT",  
-    "alg": "RS256",  
-    "jwk": {  
-        "kty": "RSA",  
-        "e": "AQAB",  
-        "kid": "ed2Nf8sb-sD6ng0-scs5390g-fFD8sfxG",  
-        "n": "yy1wpYmffgXBxhAUJzHHocCuJolwDqql75ZWuCQ_cb33K2vh9m"  
-        }   
+Example:  
+> {
+    "kid": "ed2Nf8sb-sD6ng0-scs5390g-fFD8sfxG",
+    "typ": "JWT",
+    "alg": "RS256",
+    "jwk": {
+        "kty": "RSA",
+        "e": "AQAB",
+        "kid": "ed2Nf8sb-sD6ng0-scs5390g-fFD8sfxG",
+        "n": "yy1wpYmffgXBxhAUJzHHocCuJolwDqql75ZWuCQ_cb33K2vh9m"
+    }
+> }   
+    
+Ideally, servers should only use a limited whitelist of public keys to verify JWT signatures. However, misconfigured servers sometimes use any key that's embedded in the jwk parameter.
+You can exploit this behavior by signing a modified JWT using your own RSA private key, then embedding the matching public key in the jwk header.  
+    
+ 
 * In Burp JWT Editor New RSA Key,Generate to automatically generate a new key pair.
 * at JWT Change "sub": "administrator", click Attack, then select Embedded JWK, select your newly generated RSA key. In the header of the JWT, observe that a jwk parameter has been added containing your public key.
 * Send the request /admin
